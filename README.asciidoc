@@ -1,0 +1,16 @@
+= What is 
+
+Expression viewer is a web application that converts an expression that user inputs to a graph.
+
+= How to use
+
+This application depends on python3 and MongoDB.
+
+If you can use Docker, input following commands.
+
+[source,bash]
+----
+pip3 install -r requirements.txt
+docker run --name some-mongo -p 27017:27017 -d mongo
+python3 main.py
+----

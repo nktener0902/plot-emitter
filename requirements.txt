@@ -1,0 +1,6 @@
+bottle
+sympy
+numpy
+beaker
+pymongo
+passlib
