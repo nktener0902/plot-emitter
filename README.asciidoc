@@ -2,6 +2,8 @@
 
 Expression viewer is a web application that converts an expression that user inputs to a graph.
 
+image::images/expression-viewer-capture.png[]
+
 = How to use
 
 This application depends on python3 and MongoDB.
