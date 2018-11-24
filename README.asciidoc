@@ -2,6 +2,8 @@
 
 Expression viewer is a web application that converts an expression that user inputs to a graph.
 
+This application also outputs plot data. User can use the plot data as sample data for machine learning.
+
 image::images/expression-viewer-capture.png[]
 
 = How to use
