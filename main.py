@@ -15,7 +15,7 @@ from decimal import Decimal
 
 
 connection = pymongo.MongoClient('localhost', 27017)
-db = connection.expression_view
+db = connection.expression_viewer
 collection = db.accounts
 
 DEBUG = True
@@ -63,29 +63,32 @@ def session_check():
 def login():
     email = request.forms.get('email')
     password = request.forms.get('password')
-    hashed_password = pwd_context.encrypt(password)
+    hashed_password = pwd_context.hash(password)
     if email is None or password is None:
         return template('./views/login', {'nomatch': ''})
     elif email == '' or password == '':
         return template('./views/login', {'nomatch': 'Please enter your e-mail address and password.'})
     else:
-        if pwd_context.verify(password, collection.find_one({'email': email})['password']):
-            hashed_email = pwd_context.encrypt(email)
-            auth.login(hashed_email, email)
-            session = request.environ.get('beaker.session')
-            session['user'] = hashed_email
-            context = {
-                'expression': '',
-                'noise': '',
-                'fineness': '',
-                'x_min_range': '',
-                'x_max_range': '',
-                'comment': '',
-                'plots': [],
-                'message': ''
-            }
-            return redirect('/')
+        account = collection.find_one({'email': email})
+        if account is not None:
+            if pwd_context.verify(password, account['password']):
+                hashed_email = pwd_context.encrypt(email)
+                auth.login(hashed_email, email)
+                session = request.environ.get('beaker.session')
+                session['user'] = hashed_email
+                context = {
+                        'expression': '',
+                        'noise': '',
+                        'fineness': '',
+                        'x_min_range': '',
+                        'x_max_range': '',
+                        'comment': '',
+                        'plots': [],
+                        'message': ''
+                        }
+                return redirect('/')
         else:
+            print("Cound not find account.")
             return template('./views/login', {'nomatch': 'The e-mail address or password do not match.'})
 
 
