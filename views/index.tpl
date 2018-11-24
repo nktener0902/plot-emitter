@@ -12,14 +12,14 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="/stylesheet/home.css" type="text/css" />
-    <link rel="stylesheet" href="/stylesheet/login.css" type="text/css" />
+    <link rel="stylesheet" href="/stylesheet/index.css" type="text/css" />
     <link rel="stylesheet" href="/stylesheet/graph.css" type="text/css" />
 
     <!-- d3js -->
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <!-- Custom JS -->
     <script type="text/javascript" src="/javascript/graph.js"></script>
+    <script type="text/javascript" src="/javascript/index.js"></script>
 
 </head>
 
@@ -61,9 +61,9 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="#" data-value="none" onclick="noiseFuncEvent['none']();">None</a></li>
-                    <li><a href="#" data-value="uniform" onclick="noiseFuncEvent['uniform']();">Uniform random</a></li>
-                    <li><a href="#" data-value="gaussian" onclick="noiseFuncEvent['gaussian']();">Gaussian noise</a></li>
+                    <li><a href="#" data-value="none" onClick="noiseFuncEvent['none']();">None</a></li>
+                    <li><a href="#" data-value="uniform" onClick="noiseFuncEvent['uniform']();">Uniform random</a></li>
+                    <li><a href="#" data-value="gaussian" onClick="noiseFuncEvent['gaussian']();">Gaussian noise</a></li>
                 </ul>
                 <input id="dropdown_noise_function" type="hidden" name="noise_function" value="">
             </div>
@@ -125,6 +125,10 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Custom JavaScript -->
+%if message != "":
+<script type="text/javascript">alertSetShow("{{message}}");</script>
+%end
 
 </body>
 </html>

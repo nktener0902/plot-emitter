@@ -17,10 +17,10 @@ var alertAutoSet = function() {
     var x_min_range = document.getElementById('form_x_min_range');
     var x_max_range = document.getElementById('form_x_max_range');
     if (expression.value == '' ||
-        noise_function.value = '' ||
-        fineness.value = '' ||
-        x_min_range.value = '' ||
-        x_max_range.value = ''){
+        noise_function.value == '' ||
+        fineness.value == '' ||
+        x_min_range.value == '' ||
+        x_max_range.value == ''){
         alert_message = "Please fill out all forms.";
     } else if (noise_function.value != 'none' && noise.value == ''){
         alert_message = "Please fill out all forms.";
@@ -65,19 +65,23 @@ var alertShow = function(){
 }
 
 var filterInt = function(value){
-    if(/^(\_|\+)?[0-9]+$/.test(value)) return Number(value);
-    retrn NaN;
+    if(/^(\-|\+)?[0-9]+$/.test(value)) {
+        return Number(value);
+    }
+    return NaN;
 }
 
 var filterFloat = function(value){
-    if(/^(\_|\+)?[0-9]+(\.[0-9]+)?)$/.test(value)) return Number(value);
-    retrn NaN;
+    if(/^(\-|\+)?([0-9]+(\.[0-9]+)?)$/.test(value)) {
+        return Number(value);
+    }
+    return NaN;
 }
 
 $(function(){
     $(".dropdown-menu li a").click(function(){
-        $(this).parent('.dropdown').find('.dropdown-toggle').html($(this).text() + ' <span class="caret"></span>');
-        $(this).parent('.dropdown').find('input[name="noise_function"]').val($(this).attr("data-value"));
+        $(this).parents('.dropdown').find('.dropdown-toggle').html($(this).text() + ' <span class="caret"></span>');
+        $(this).parents('.dropdown').find('input[name="noise_function"]').val($(this).attr("data-value"));
     });
     $(".dropdown-menu li a").click();
 });
