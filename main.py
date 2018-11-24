@@ -72,7 +72,7 @@ def login():
         account = collection.find_one({'email': email})
         if account is not None:
             if pwd_context.verify(password, account['password']):
-                hashed_email = pwd_context.encrypt(email)
+                hashed_email = pwd_context.hash(email)
                 auth.login(hashed_email, email)
                 session = request.environ.get('beaker.session')
                 session['user'] = hashed_email
