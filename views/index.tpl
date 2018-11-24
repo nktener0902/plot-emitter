@@ -104,9 +104,9 @@
                 createsvg("{{plots}}");
             </script>
         </div>
-        <!-- <div>
+        <div>
             <button class="btn btn-lg btn-success" onclick="tableDownload({{plots}})">Download</button>
-        </div> -->
+        </div>
         %end
         <table class="table table-striped">
             <thead>
