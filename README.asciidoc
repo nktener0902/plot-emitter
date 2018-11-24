@@ -14,7 +14,18 @@ If you can use Docker, input following commands.
 
 [source,bash]
 ----
-pip3 install -r requirements.txt
+# Download
+git clone https://github.com/nktener0902/expression-viewer.git
+cd expression-viewer
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+# Install dependent libraries
+pip install -r requirements.txt
+# Start MongoDB
 docker run --name some-mongo -p 27017:27017 -d mongo
-python3 main.py
+# Start expression-viewer
+python main.py
 ----
+
+After starting expression-viewer, "expression-viewer" database will be created in MongoDB.
