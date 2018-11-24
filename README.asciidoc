@@ -6,7 +6,7 @@ This application also outputs plot data. User can use the plot data as sample da
 
 image::images/expression-viewer-capture.png[]
 
-= How to use
+= Getting started
 
 This application depends on python3 and MongoDB.
 
