@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Expression graph</title>
+
+    <!-- Jquery -->
+    <script   src="https://code.jquery.com/jquery-3.3.1.slim.js"   integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA="   crossorigin="anonymous"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/stylesheet/index.css" type="text/css" />
+    <link rel="stylesheet" href="/stylesheet/graph.css" type="text/css" />
+
+    <!-- d3js -->
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- Custom JS -->
+    <script type="text/javascript" src="/javascript/graph.js"></script>
+    <script type="text/javascript" src="/javascript/index.js"></script>
+
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Expression viewer</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="/history">History</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="starter-template">
+        %for his in histories:
+            <form id="expression_input" action="/" method="post">
+                <p>Expression: y = {{his['expression']}}, Noise function: {{his['noise_function']}}, Noise: {{his['noise']}}, fineness: {{his['fineness']}}, {{his['x_min_range']}} &le; &le; {{his['x_max_range']}}</p>
+                %if 'comment' in his:
+                    <p>{{his['comment'].encode('utf-8')}}</p>
+                %end
+                <input id="form_expression" type="hidden" value="{{his['expression']}}" name="expression" type="text">
+                <input id="dropdown_noise_function" type="hidden" value="{{his['noise_function']}}" name="noise_function">
+                <input id="form_noise" type="hidden" value="{{his['noise']}}" name="noise" type="text">
+                <input id="form_fineness" type="hidden" value="{{his['fineness']}}" name="fineness" type="text">
+                <input id="form_x_min_range" type="hidden" value="{{his['x_min_range']}}" name="x_min_range" type="text">
+                <input id="form_x_max_range" type="hidden" value="{{his['x_max_range']}}" name="x_max_range" type="text">
+                %if 'comment' in his:
+                    <input id="comment" type="hidden" value="{{his['comment']}}" name="comment" type="text">
+                %else:
+                    <input id="comment" type="hidden" value="" name="comment" type="text">
+                %end
+                <button class="btn btn-primary" type="submit">Retry</button>
+            </form>
+            <hr />
+        %end
+    </div>
+</div>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</body>
+</html>
