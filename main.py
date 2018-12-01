@@ -12,7 +12,7 @@ from decimal import Decimal
 import common.logger as custom_logger
 
 
-logger = custom_logger.getCustomLogger(__name__)
+logger = custom_logger.get_custom_logger(__name__)
 
 
 def main():
