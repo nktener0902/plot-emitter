@@ -4,7 +4,6 @@ from logging import getLogger, StreamHandler, DEBUG
 
 
 def getCustomLogger(name):
-    print(name)
     logger = getLogger(name)
     handler = StreamHandler()
     handler.setLevel(DEBUG)  # Change log level for purpose
