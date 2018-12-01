@@ -1,16 +1,14 @@
 # coding: utf-8
 
 from bottle import get, post, request, response, run, redirect, Bottle, template, static_file, route, error, default_app
-from time import strftime
-from os import path as op
+
 from sympy import *
-from numpy.random import *
+import numpy.random as npr
 from beaker.middleware import SessionMiddleware
 import strip_path_middleware as spm
 import pymongo
 from passlib.apps import custom_app_context as pwd_context
 import auth as au
-import socket
 from decimal import Decimal
 
 
@@ -194,9 +192,9 @@ def post_expression():
         if noise_function == "none":
             noise_val = 0
         elif noise_function == "uniform":
-            noise_val = rand() * float(noise)
+            noise_val = npr.rand() * float(noise)
         elif noise_function == "gaussian":
-            noise_val = normal(0, float(noise))
+            noise_val = npr.normal(0, float(noise))
         p_y = eq1.subs([(x, float(p_x))])
         f_p_y = 0
         try:
