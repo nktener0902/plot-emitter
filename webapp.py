@@ -15,11 +15,42 @@ import common.logger as custom_logger
 logger = custom_logger.get_custom_logger(__name__)
 
 
+class Context:
+    def __init__(self):
+        self.expression = ''
+        self.noise = ''
+        self.fineness = ''
+        self.x_min_range = ''
+        self.x_max_range = ''
+        self.comment = ''
+        self.plots = []
+        self.message = ''
+
+    def json(self):
+        return {
+            'expression': self.expression,
+            'noise': self.noise,
+            'fineness': self.fineness,
+            'x_min_range': self.x_min_range,
+            'x_max_range': self.x_max_range,
+            'comment': self.comment,
+            'plots': self.plots,
+            'message': self.message
+        }
+
+
 class WebApp:
     """is management controller of expression viewer web app"""
+
     def __init__(self, host='0.0.0.0', port=8080, debug=False):
+        # Initialize web app configuration
+        self.host = host
+        self.port = port
+        self.debug = debug
+        # Connect MongoDB
         connection = pymongo.MongoClient('localhost', 27017)
         db = connection.expression_viewer
+        # Initialize session configuration
         collection = db.accounts
         session_opts = {
             'session.type': 'file',
@@ -27,32 +58,22 @@ class WebApp:
             'session.data_dir': './sessions',
             'session.auto': True
         }
-        app = SessionMiddleware(default_app(), session_opts)
-        app = spm.StripPathMiddleware(app)
-        auth = au.Auth()
+        self.app = SessionMiddleware(default_app(), session_opts)
+        self.app = spm.StripPathMiddleware(self.app)
+        self.auth = au.Auth()
 
         @get('/')
         def view_main_page():
             if session_check():
-                context = {
-                    'expression': '',
-                    'noise': '',
-                    'fineness': '',
-                    'x_min_range': '',
-                    'x_max_range': '',
-                    'comment': '',
-                    'plots': [],
-                    'message': ''
-                }
-                return template('./views/index', **context)
+                context = Context()
+                return template('./views/index', context.json())
             else:
-                context = {'nomatch': ''}
                 return template('./views/login', {'nomatch': ''})
 
         def session_check():
             session = request.environ.get('beaker.session')
             if 'user' in session:
-                if auth.find(session.get('user')):
+                if self.auth.find(session.get('user')):
                     return True
             return False
 
@@ -70,19 +91,9 @@ class WebApp:
                 if account is not None:
                     if pwd_context.verify(password, account['password']):
                         hashed_email = pwd_context.hash(email)
-                        auth.login(hashed_email, email)
+                        self.auth.login(hashed_email, email)
                         session = request.environ.get('beaker.session')
                         session['user'] = hashed_email
-                        context = {
-                            'expression': '',
-                            'noise': '',
-                            'fineness': '',
-                            'x_min_range': '',
-                            'x_max_range': '',
-                            'comment': '',
-                            'plots': [],
-                            'message': ''
-                        }
                         return redirect('/')
                 else:
                     print("Cound not find account.")
@@ -101,34 +112,25 @@ class WebApp:
             else:
                 collection.insert_one({'email': email, 'password': hashed_password, 'history': []})
                 hashed_email = pwd_context.hash(email)
-                auth.login(hashed_email, email)
+                self.auth.login(hashed_email, email)
                 session = request.environ.get('beaker.session')
                 session['user'] = hashed_email
-                context = {
-                    'expression': '',
-                    'noise': '',
-                    'fineness': '',
-                    'x_min_range': '',
-                    'x_max_range': '',
-                    'comment': '',
-                    'plots': [],
-                    'message': ''
-                }
-                return template('./views/index', **context)
+                context = Context()
+                return template('./views/index', context.json())
 
         @get('/logout')
         def logout():
             session = request.environ.get('beaker.session')
-            auth.logout(session.get('user'))
+            self.auth.logout(session.get('user'))
             if 'user' in session:
                 del session['user']
             return redirect('/')
 
         @get('/history')
-        def history():
+        def history_page():
             if not session_check(): redirect('/')
             session = request.environ.get('beaker.session')
-            email = auth.get_email(session.get('user'))
+            email = self.auth.get_email(session.get('user'))
             history = collection.find_one({'email': email})['history']
             context = {'histories': history}
             return template('./views/history', **context)
@@ -220,7 +222,7 @@ class WebApp:
             }
             # mongodb
             session = request.environ.get('beaker.session')
-            email = auth.get_email(session.get('user'))
+            email = self.auth.get_email(session.get('user'))
             history = collection.find_one({'email': email})['history']
             while len(history) > 30:
                 del history[-1]
@@ -233,4 +235,6 @@ class WebApp:
         def error404(error):
             return template('./views/404')
 
-        run(app=app, host=host, port=port, debug=debug, reloader=True)
+    def start(self):
+        run(app=self.app, host=self.host, port=self.port, debug=self.debug, reloader=True)
+

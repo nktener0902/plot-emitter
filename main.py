@@ -12,6 +12,7 @@ def main():
     port = 8080
     debug = True
     app = WebApp(host=host, port=port, debug=debug)
+    app.start()
 
 
 if __name__ == '__main__':
