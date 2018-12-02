@@ -4,8 +4,7 @@ from logging import getLogger, StreamHandler, DEBUG
 
 
 def get_custom_logger(name):
-    """
-    This function return a logger object.
+    """ return a logger object.
     :param name: Function name
     :return: logger object
     """
