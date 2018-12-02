@@ -8,7 +8,10 @@ logger = custom_logger.get_custom_logger(__name__)
 
 
 def main():
-    app = WebApp()
+    host = '0.0.0.0'
+    port = 8080
+    debug = True
+    app = WebApp(host=host, port=port, debug=debug)
 
 
 if __name__ == '__main__':

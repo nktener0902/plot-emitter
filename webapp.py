@@ -17,7 +17,7 @@ logger = custom_logger.get_custom_logger(__name__)
 
 class WebApp:
     """is management controller of expression viewer web app"""
-    def __init__(self):
+    def __init__(self, host='0.0.0.0', port=8080, debug=False):
         connection = pymongo.MongoClient('localhost', 27017)
         db = connection.expression_viewer
         collection = db.accounts
@@ -233,4 +233,4 @@ class WebApp:
         def error404(error):
             return template('./views/404')
 
-        run(app=app, host="0.0.0.0", port=8080, debug=True, reloader=True)
+        run(app=app, host=host, port=port, debug=debug, reloader=True)
