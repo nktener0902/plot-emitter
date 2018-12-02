@@ -29,3 +29,5 @@ python main.py
 ----
 
 After starting expression-viewer, "expression-viewer" database will be created in MongoDB.
+
+If you want to change configuration of web app, open `main.py` and edit settings of web app (host, port and debug).
