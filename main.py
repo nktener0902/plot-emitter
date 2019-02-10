@@ -13,7 +13,7 @@ def main():
     debug = True
     mongo_host = 'localhost'
     mongo_port = 27017
-    app = WebApp(host=host, port=port, debug=debug, mongo_host=mongo_host, mongo_port = 27017)
+    app = WebApp(host=host, port=port, debug=debug, mongo_host=mongo_host, mongo_port=mongo_port)
     app.start()
 
 
