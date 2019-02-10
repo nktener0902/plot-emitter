@@ -11,7 +11,9 @@ def main():
     host = '0.0.0.0'
     port = 8080
     debug = True
-    app = WebApp(host=host, port=port, debug=debug)
+    mongo_host = 'localhost'
+    mongo_port = 27017
+    app = WebApp(host=host, port=port, debug=debug, mongo_host=mongo_host, mongo_port = 27017)
     app.start()
 
 

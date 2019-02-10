@@ -42,13 +42,13 @@ class Context:
 class WebApp:
     """is management controller of expression viewer web app"""
 
-    def __init__(self, host='0.0.0.0', port=8080, debug=False):
+    def __init__(self, host='0.0.0.0', port=8080, debug=False, mongo_host='localhost', mongo_port=27017):
         # Initialize web app configuration
         self.host = host
         self.port = port
         self.debug = debug
         # Connect MongoDB
-        connection = pymongo.MongoClient('localhost', 27017)
+        connection = pymongo.MongoClient(mongo_host, mongo_port)
         db = connection.expression_viewer
         # Initialize session configuration
         collection = db.accounts
