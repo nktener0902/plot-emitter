@@ -8,7 +8,11 @@ image::images/expression-viewer-capture.png[]
 
 = Getting started
 
-This application depends on python3 and MongoDB.
+This application depends on python3 and mongoDB.
+Before using expression viewer, install them (See https://www.python.org/[Python], https://www.mongodb.com/[mongoDB]).
+
+Create `config.json` from `_config.json`.
+If necessary, change the parameters based on your environment.
 
 If you can use Docker, input following commands.
 
