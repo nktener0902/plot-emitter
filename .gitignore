@@ -3,6 +3,6 @@
 /sessions/
 __pycache__/
 .DS_Store
-/*.pyc
+*.pyc
 /.vscode/
 config.json
