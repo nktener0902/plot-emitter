@@ -1,8 +1,6 @@
 = What is 
 
-Expression viewer is a web application that converts an expression that user inputs to a graph.
-
-This application also outputs plot data. User can use the plot data as sample data for machine learning.
+*Expression viewer* is a web application that generates a graph and plot data from a numerical expression. Expression viewer can add noise to given numerical expression and generate a graph and plot data. The generated plot data may be useful for your excercise of machine learning and data analytics.
 
 image::images/expression-viewer-capture.png[]
 
