@@ -1,4 +1,4 @@
-%# This is 404 page.
+{% load static %}
 
 <!DOCTYPE html>
 
@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="/stylesheet/index.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'expression/stylesheet/index.css' %}">
 
 </head>
 <body>
@@ -26,9 +26,10 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
+                <li><a href="{% url 'expression:index' %}">Home</a></li>
                 <li><a href="#about">About</a></li>
-                <li><a href="/contact">Contact</a></li>
+                <li><a href="{% url 'expression:history' %}">History</a></li>
+                <li><a href="/logout">Logout</a></li>
             </ul>
         </div>
     </div>

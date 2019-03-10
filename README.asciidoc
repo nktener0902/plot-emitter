@@ -8,8 +8,8 @@ image::images/expression-viewer-capture.png[]
 
 = Getting started
 
-This application depends on python3 and mongoDB.
-Before using expression viewer, install them (See https://www.python.org/[Python], https://www.mongodb.com/[mongoDB]).
+This application depends on Python3.
+Before using expression viewer, install Python3 (See https://www.python.org/[Python]).
 
 Create `config.json` from `_config.json`.
 If necessary, change the parameters based on your environment.
@@ -28,11 +28,7 @@ source venv/bin/activate
 cp _config.json config.json
 # Install dependent libraries
 pip install -r requirements.txt
-# Start MongoDB
-docker run --name some-mongo -p 27017:27017 -d mongo
 # Start expression-viewer
 python main.py
 ----
-
-After starting expression-viewer, "expression-viewer" database will be created in MongoDB.
 

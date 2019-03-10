@@ -1,8 +1,8 @@
 /venv/
 /.idea/
-/sessions/
 __pycache__/
 .DS_Store
 *.pyc
 /.vscode/
 config.json
+db.sqlite3

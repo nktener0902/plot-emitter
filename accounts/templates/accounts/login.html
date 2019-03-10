@@ -1,4 +1,4 @@
-%# This is login page.
+{% load static %}
 
 <!DOCTYPE html>
 
@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="/stylesheet/index.css" type="text/css" />
-    <link rel="stylesheet" href="/stylesheet/login.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/stylesheet/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/stylesheet/login.css' %}">
 
 </head>
 <body>
@@ -44,12 +44,12 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="login_alert"></div>
-                %if not nomatch == "":
+                {% if form.errors %}
                 <div class="alert">
                     <span class="closebtn" onclick="this.parentElement.style.display='none';"> x </span>
-                    <p>{{nomatch}}</p>
+                    <p>{{form.errors}}</p>
                 </div>
-                %end
+                {% endif %}
                 <ul class="tab">
                     <li>
                         <a id="defaultOpen" href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'Login')"> Login </a>
@@ -60,28 +60,33 @@
                 </ul>
                 <div id="Login" class="tabcontent">
                     <h2>Log in</h2>
-                    <form action="/login" method="POST">
+                    <form action="{% url 'accounts:login' %}" method="POST" novalidate >
                         <div class="form-group">
-                            <input id="loginform" type="text", name="email", placeholder="Email">
+                            <input id="loginform" type="text", name="username", placeholder="User name">
                         </div>
                         <div class="form-group">
                             <input id="loginform" type="password", name="password", placeholder="Password">
                         </div>
                         <div class="form-group">
+                            {% csrf_token %}
                             <button id="login_button" class="btn btn-success" type="submit">Log in</button>
                         </div>
                     </form>
                 </div>
                 <div id="Register" class="tabcontent">
                     <h2>Register</h2>
-                    <form action="/register" method="POST">
+                    <form action="{% url 'accounts:signup' %}" method="POST" novalidate >
                         <div class="form-group">
-                            <input id="loginform" type="text", name="email", placeholder="Email">
+                            <input id="loginform" type="text", name="username", placeholder="User name">
                         </div>
                         <div class="form-group">
-                            <input id="loginform" type="password", name="password", placeholder="Password">
+                            <input id="loginform" type="password", name="password1", placeholder="Password (8 or more characters)">
                         </div>
                         <div class="form-group">
+                            <input id="loginform" type="password", name="password2", placeholder="Password confirmation">
+                        </div>
+                        <div class="form-group">
+                            {% csrf_token %}
                             <button id="register_button" class="btn btn-success" type="submit">Create account</button>
                         </div>
                     </form>
@@ -96,7 +101,7 @@
 
 
 <!-- Custom JS -->
-<script type="text/javascript" src="/javascript/logintab.js"></script>
+<script type="text/javascript" src="{% static 'accounts/javascript/logintab.js' %}"></script>
 
 </body>
 </html>

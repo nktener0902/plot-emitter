@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -12,14 +14,14 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="/stylesheet/index.css" type="text/css" />
-    <link rel="stylesheet" href="/stylesheet/graph.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'expression/stylesheet/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'expression/stylesheet/graph.css' %}">
 
     <!-- d3js -->
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <!-- Custom JS -->
-    <script type="text/javascript" src="/javascript/graph.js"></script>
-    <script type="text/javascript" src="/javascript/index.js"></script>
+    <script type="text/javascript" src="{% static 'expression/javascript/index.js' %}"></script>
+    <script type="text/javascript" src="{% static 'expression/javascript/graph.js' %}"></script>
 
 </head>
 
@@ -35,10 +37,10 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
+                <li><a href="{% url 'expression:index' %}">Home</a></li>
                 <li><a href="#about">About</a></li>
-                <li class="active"><a href="/history">History</a></li>
-                <li><a href="/logout">Logout</a></li>
+                <li class="active"><a href="{% url 'expression:history' %}">History</a></li>
+                <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
             </ul>
         </div>
     </div>
@@ -46,27 +48,27 @@
 
 <div class="container">
     <div class="starter-template">
-        %for his in histories:
+        {% for his in histories %}
             <form id="expression_input" action="/" method="post">
-                <p>Expression: y = {{his['expression']}}, Noise function: {{his['noise_function']}}, Noise: {{his['noise']}}, fineness: {{his['fineness']}}, {{his['x_min_range']}} &le; &le; {{his['x_max_range']}}</p>
-                %if 'comment' in his:
-                    <p>{{his['comment'].encode('utf-8')}}</p>
-                %end
-                <input id="form_expression" type="hidden" value="{{his['expression']}}" name="expression" type="text">
-                <input id="dropdown_noise_function" type="hidden" value="{{his['noise_function']}}" name="noise_function">
-                <input id="form_noise" type="hidden" value="{{his['noise']}}" name="noise" type="text">
-                <input id="form_fineness" type="hidden" value="{{his['fineness']}}" name="fineness" type="text">
-                <input id="form_x_min_range" type="hidden" value="{{his['x_min_range']}}" name="x_min_range" type="text">
-                <input id="form_x_max_range" type="hidden" value="{{his['x_max_range']}}" name="x_max_range" type="text">
-                %if 'comment' in his:
-                    <input id="comment" type="hidden" value="{{his['comment']}}" name="comment" type="text">
-                %else:
+                <p>Expression: y = {{his.expression}}, Noise function: {{his.noise_function}}, Noise: {{his.noise}}, fineness: {{his.fineness}}, {{his.x_min_range}} &le; &le; {{his.x_max_range}}</p>
+                {% if 'comment' in his %}
+                    <p>{{his.comment}}</p>
+                {% endif %}
+                <input id="form_expression" type="hidden" value="{{his.expression}}" name="expression" type="text">
+                <input id="dropdown_noise_function" type="hidden" value="{{his.noise_function}}" name="noise_function">
+                <input id="form_noise" type="hidden" value="{{his.noise}}" name="noise" type="text">
+                <input id="form_fineness" type="hidden" value="{{his.fineness}}" name="fineness" type="text">
+                <input id="form_x_min_range" type="hidden" value="{{his.x_min_range}}" name="x_min_range" type="text">
+                <input id="form_x_max_range" type="hidden" value="{{his.x_max_range}}" name="x_max_range" type="text">
+                {% if 'comment' in his %}
+                    <input id="comment" type="hidden" value="{{his.comment}}" name="comment" type="text">
+                {% else %}
                     <input id="comment" type="hidden" value="" name="comment" type="text">
-                %end
+                {% endif %}
                 <button class="btn btn-primary" type="submit">Retry</button>
             </form>
             <hr />
-        %end
+        {% endfor %}
     </div>
 </div>
 
