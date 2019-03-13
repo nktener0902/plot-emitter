@@ -5,6 +5,7 @@ from django.utils import timezone
 
 class InputQuery(models.Model):
     expression = models.CharField(max_length=200)
+    noise_function =models.CharField
     pub_date = models.DateTimeField('date published')
 
     def __str__(self):

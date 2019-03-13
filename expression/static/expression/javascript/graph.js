@@ -1,5 +1,5 @@
 function createsvg(dataset){
-    dataset = dataset.replace(/&#039;/g, '"');
+    dataset = dataset.replace(/&#39;/g, '"');
     dataset_json = JSON.parse(dataset);
 
     var margin = {top: 20, right: 20, bottom: 30, left: 40},
