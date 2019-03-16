@@ -19,9 +19,11 @@ python3 -m venv venv
 source venv/bin/activate
 # Install dependent libraries
 pip install -r requirements.txt
+# Migrate Database
+python manage.py migrate
 # Start expression-viewer
 python manage.py runserver
 ----
 
-Let's open browser and access `http://localhost:8000`.
+Let's open browser and access `http://localhost:8000/expression`.
 
