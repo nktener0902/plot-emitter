@@ -9,11 +9,6 @@ image::images/expression-viewer-capture.png[]
 This application depends on Python3.
 Before using expression viewer, install Python3 (See https://www.python.org/[Python]).
 
-Create `config.json` from `_config.json`.
-If necessary, change the parameters based on your environment.
-
-If you can use Docker, input following commands.
-
 [source,bash]
 ----
 # Download
@@ -22,11 +17,11 @@ cd expression-viewer
 # Create virtual environment
 python3 -m venv venv
 source venv/bin/activate
-# Create config.json
-cp _config.json config.json
 # Install dependent libraries
 pip install -r requirements.txt
 # Start expression-viewer
-python main.py
+python manage.py runserver
 ----
+
+Let's open browser and access `http://localhost:8000`.
 
