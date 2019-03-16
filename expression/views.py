@@ -1,6 +1,6 @@
 from django.views import generic
 from django.shortcuts import render
-from .models import InputQuery
+from expression.models import InputQuery
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 from sympy import *
@@ -31,7 +31,6 @@ class IndexView(LoginRequiredMixin, generic.ListView):
         y = Symbol('y')
         context = deserialized_expression(context, x, y)
 
-        # ToDo
         plots_list = []
         p_x = Decimal(context['x_min_range'])
         while round(float(p_x), 7) <= float(context['x_max_range']):
@@ -55,8 +54,18 @@ class IndexView(LoginRequiredMixin, generic.ListView):
         if context['noise_function'] == 'none':
             noise = None
         context['plots'] = plots_list
-        print(plots_list)
         context['message'] = ""
+        iq = InputQuery(
+            pub_date=timezone.now(),
+            expression=context['expression'],
+            noise_function=context['noise_function'],
+            noise=float(context['noise']),
+            fineness=float(context['fineness']),
+            x_min_range=float(context['x_min_range']),
+            x_max_range=float(context['x_max_range']),
+            comment=context['comment']
+        )
+        iq.save()
         return render(request, 'expression/index.html', context)
 
 
@@ -72,6 +81,9 @@ def deserialized_expression(context, x, y):
 class HistoryView(LoginRequiredMixin, generic.ListView):
     model = InputQuery
     template_name = 'expression/history.html'
+    context_object_name = 'histories'
 
     def get_queryset(self):
-        return InputQuery.objects.filter(pub_date__lte=timezone.now())
+        """Return the last five published questions."""
+        return InputQuery.objects.order_by('-pub_date')[:30]
+
