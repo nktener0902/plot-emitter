@@ -50,7 +50,7 @@
     <div class="starter-template">
         {% for his in histories %}
             <form id="expression_input" action="{% url 'expression:index' %}" method="post">
-                <p>Expression: y = {{his.expression}}, Noise function: {{his.noise_function}}, Noise: {{his.noise}}, fineness: {{his.fineness}}, {{his.x_min_range}} &le; &le; {{his.x_max_range}}</p>
+                <p>Expression: y = {{his.expression}}, Noise function: {{his.noise_function}}, Noise: {{his.noise}}, fineness: {{his.fineness}}, x range: {{his.x_min_range}} &le; x &le; {{his.x_max_range}}</p>
                 {% if 'comment' in his %}
                     <p>{{his.comment}}</p>
                 {% endif %}
