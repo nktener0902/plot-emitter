@@ -30,7 +30,6 @@ class IndexView(LoginRequiredMixin, generic.ListView):
         x = Symbol('x')
         y = Symbol('y')
         context = deserialized_expression(context, x, y)
-
         plots_list = []
         p_x = Decimal(context['x_min_range'])
         while round(float(p_x), 7) <= float(context['x_max_range']):

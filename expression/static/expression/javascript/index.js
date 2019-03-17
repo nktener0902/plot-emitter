@@ -1,12 +1,12 @@
 var alert_message = "";
 
-$('#expression_input').submit(function(){
+var popupMessage = function(){
     alertAutoSet();
     alertShow();
     if (alert_message != ""){
         return false;
     }
-});
+}
 
 var alertAutoSet = function() {
     alert_message = "";
@@ -54,7 +54,7 @@ var alertShow = function(){
         while (alert.firstChild) alert.removeChild(alert.firstChild);
         var span = document.createElement('span');
         span.setAttribute('class', 'closebtn');
-        span.setAttribute('onclick', 'this.parentElement,style.display="none";');
+        span.setAttribute('onclick', 'this.parentElement.style.display="none";');
         span.textContent = "x";
         var message = document.createElement('p');
         message.textContent = alert_message;

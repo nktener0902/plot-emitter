@@ -49,7 +49,7 @@
 <div class="container">
     <div class="starter-template">
         <div id="alert_message"></div>
-        <form id="expression_input" action="{% url 'expression:index' %}" method="post" accept-charset="utf-8">
+        <form id="expression_input" action="{% url 'expression:index' %}" method="post" accept-charset="utf-8" onsubmit="return popupMessage();">
             <p>
             <div class="input-group">
                 <span class="input-group-addon" id="basic-addon1">y=</span>
@@ -90,7 +90,7 @@
             </div>
             </p>
             {% csrf_token %}
-            <button class="btn btn-lg btn-primary" type="submit" onclick="document.charset='utf-8';">Output</button>
+            <button class="btn btn-lg btn-primary" type="submit" >Output</button>
         </form>
         <hr />
 
