@@ -51,11 +51,27 @@ class IndexView(LoginRequiredMixin, generic.ListView):
                 return render(request, 'expression/index.html', context)
             plots_list.append({'x': round(float(p_x), 7), 'f': f_p_y + noise_val})
             p_x += Decimal(context['fineness'])
-        if context['noise_function'] == 'none':
-            noise = None
         context['plots'] = plots_list
         context['message'] = ""
-        iq = InputQuery(
+        iq = create_input_query(context)
+        iq.save()
+        return render(request, 'expression/index.html', context)
+
+
+def create_input_query(context):
+    if context['noise_function'] == 'none':
+        return InputQuery(
+            pub_date=timezone.now(),
+            expression=context['expression'],
+            noise_function=context['noise_function'],
+            noise=None,
+            fineness=float(context['fineness']),
+            x_min_range=float(context['x_min_range']),
+            x_max_range=float(context['x_max_range']),
+            comment=context['comment']
+        )
+    else:
+        return InputQuery(
             pub_date=timezone.now(),
             expression=context['expression'],
             noise_function=context['noise_function'],
@@ -65,8 +81,6 @@ class IndexView(LoginRequiredMixin, generic.ListView):
             x_max_range=float(context['x_max_range']),
             comment=context['comment']
         )
-        iq.save()
-        return render(request, 'expression/index.html', context)
 
 
 def deserialized_expression(context, x, y):
