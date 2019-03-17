@@ -1,19 +1,19 @@
 = What is 
 
-*Expression viewer* is a web application that generates a graph and plot data from a numerical expression. Expression viewer can add noise to given numerical expression and generate a graph and plot data. The generated plot data may be useful for your excercise of machine learning and data analytics.
+*Plot emitter* is a web application that generates a graph and plot data from a numerical expression. Plot emitter can add noise to given numerical expression and generate a graph and plot data. The generated plot data may be useful for your excercise of machine learning and data analytics.
 
 image::images/expression-viewer-capture.png[]
 
 = Getting started
 
 This application depends on Python3.
-Before using expression viewer, install Python3 (See https://www.python.org/[Python]).
+To start plot emitter, you have to install Python3 (See https://www.python.org/[Python]) at first.
 
 [source,bash]
 ----
 # Download
-git clone https://github.com/nktener0902/expression-viewer.git
-cd expression-viewer
+git clone https://github.com/nktener0902/plot-emitter.git
+cd plot-emitter
 # Create virtual environment
 python3 -m venv venv
 source venv/bin/activate
@@ -21,7 +21,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 # Migrate Database
 python manage.py migrate
-# Start expression-viewer
+# Start plot emitter
 python manage.py runserver
 ----
 
