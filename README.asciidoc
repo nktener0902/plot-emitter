@@ -1,10 +1,12 @@
-= What is 
+= Plot emitter
+
+== What is
 
 *Plot emitter* is a web application that generates a graph and plot data from a numerical expression. Plot emitter can add noise to given numerical expression and generate a graph and plot data. The generated plot data may be useful for your excercise of machine learning and data analytics.
 
 image::images/expression-viewer-capture.png[]
 
-= Getting started
+== Getting started
 
 This application depends on Python3.
 To start plot emitter, you have to install Python3 (See https://www.python.org/[Python]) at first.
