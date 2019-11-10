@@ -6,4 +6,3 @@ __pycache__/
 /.vscode/
 config.json
 db.sqlite3
-migrations
