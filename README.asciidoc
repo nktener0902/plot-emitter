@@ -17,14 +17,9 @@ To start plot emitter, you have to install Python3 (See https://www.python.org/[
 git clone https://github.com/nktener0902/plot-emitter.git
 cd plot-emitter
 # Create virtual environment
-python3 -m venv venv
-source venv/bin/activate
-# Install dependent libraries
-pip install -r requirements.txt
-# Migrate Database
-python manage.py migrate
-# Start plot emitter
-python manage.py runserver
+python3 -m venv venv && source venv/bin/activate
+# Setup & run
+make run
 ----
 
 Let's open browser and access `http://localhost:8000/expression`.
