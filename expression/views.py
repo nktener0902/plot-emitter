@@ -1,3 +1,4 @@
+import json
 import logging
 from decimal import Decimal
 
@@ -58,7 +59,8 @@ class IndexView(LoginRequiredMixin, generic.ListView):
                 return render(request, "expression/index.html", context)
             plots_list.append({"x": round(float(p_x), 7), "f": f_p_y + noise_val})
             p_x += Decimal(context["fineness"])
-        context["plots"] = plots_list
+        context["plots"] = json.dumps(plots_list)
+        context["plots_list"] = plots_list  # テーブル用
         context["message"] = ""
         iq = create_input_query(context)
         iq.save()
