@@ -1,3 +1,4 @@
+import logging
 from decimal import Decimal
 
 import numpy.random as npr
@@ -5,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.utils import timezone
 from django.views import generic
-from sympy import *
+from sympy import Symbol
 
 from expression.models import InputQuery
 
@@ -31,7 +32,10 @@ class IndexView(LoginRequiredMixin, generic.ListView):
         }
         x = Symbol("x")
         y = Symbol("y")
-        context = deserialized_expression(context, x, y)
+        try:
+            context = deserialized_expression(context, x, y)
+        except SyntaxError:
+            return render(request, "expression/index.html", context)
         plots_list = []
         p_x = Decimal(context["x_min_range"])
         while round(float(p_x), 7) <= float(context["x_max_range"]):
@@ -89,11 +93,13 @@ def create_input_query(context):
 def deserialized_expression(context, x, y):
     try:
         context["deserialized_expression"] = eval(context["expression"])
-    except:
+    except SyntaxError:
+        logging.error("Error deserializing expression")
         context["deserialized_expression"] = None
         context["message"] = (
             "Invalid expressoin. Please refer to http://mattpap.github.io/scipy-2011-tutorial/html/basics.html."
         )
+        raise
     return context
 
 
