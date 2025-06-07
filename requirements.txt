@@ -1,6 +1,6 @@
-django
-sympy
-numpy
-beaker
-pymongo
-passlib
+Django~=5.2.2
+sympy~=1.14.0
+numpy~=2.2.6
+beaker~=1.13.0
+pymongo~=4.13.0
+passlib~=1.7.4
