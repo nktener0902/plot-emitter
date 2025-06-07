@@ -22,5 +22,4 @@ python3 -m venv venv && source venv/bin/activate
 make run
 ----
 
-Let's open browser and access `http://localhost:8000/expression`.
-
+Let's open browser and access `http://localhost:8000/`.

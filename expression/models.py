@@ -5,7 +5,7 @@ from django.utils import timezone
 
 
 class InputQuery(models.Model):
-    pub_date = models.DateTimeField("date published")
+    published_at = models.DateTimeField("date published")
     expression = models.CharField(max_length=200)
     noise_function = models.CharField(max_length=20)
     noise = models.FloatField(null=True)
@@ -19,4 +19,4 @@ class InputQuery(models.Model):
 
     def was_published_in_a_month(self):
         now = timezone.now()
-        return now >= self.pub_date >= timezone.now() - datetime.timedelta(days=30)
+        return now >= self.published_at >= timezone.now() - datetime.timedelta(days=30)

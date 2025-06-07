@@ -15,8 +15,8 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     context_object_name = "latest_query_list"
 
     def get_queryset(self):
-        return InputQuery.objects.filter(pub_date__lte=timezone.now()).order_by(
-            "-pub_date"
+        return InputQuery.objects.filter(published_at__lte=timezone.now()).order_by(
+            "-published_at"
         )[:30]
 
     def post(self, request, *args, **kwargs):
@@ -64,7 +64,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 def create_input_query(context):
     if context["noise_function"] == "none":
         return InputQuery(
-            pub_date=timezone.now(),
+            published_at=timezone.now(),
             expression=context["expression"],
             noise_function=context["noise_function"],
             noise=None,
@@ -75,7 +75,7 @@ def create_input_query(context):
         )
     else:
         return InputQuery(
-            pub_date=timezone.now(),
+            published_at=timezone.now(),
             expression=context["expression"],
             noise_function=context["noise_function"],
             noise=float(context["noise"]),
@@ -104,4 +104,4 @@ class HistoryView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         """Return the last five published questions."""
-        return InputQuery.objects.order_by("-pub_date")[:30]
+        return InputQuery.objects.order_by("-published_at")[:30]
