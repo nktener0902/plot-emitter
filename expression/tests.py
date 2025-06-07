@@ -1,125 +1,54 @@
-import datetime
-
 from django.test import TestCase
 from django.urls import reverse
-from django.utils import timezone
+from django.contrib.auth.models import User
+from expression.models import InputQuery
 
-from .models import InputQuery
+class IndexViewTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.client.login(username='testuser', password='testpass')
 
-
-def create_query(question_text, days):
-    """
-    Create a question with the given `question_text` and published the
-    given number of `days` offset to now (negative for questions published
-    in the past, positive for questions that have yet to be published).
-    """
-    time = timezone.now() + datetime.timedelta(days=days)
-    return InputQuery.objects.create(question_text=question_text, published_at=time)
-
-
-class QuestionIndexViewTests(TestCase):
-    def test_no_questions(self):
-        """
-        If no questions exist, an appropriate message is displayed.
-        """
-        response = self.client.get(reverse("expression:index"))
+    def test_get_index_authenticated(self):
+        response = self.client.get(reverse('expression:index'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "No expression are available.")
-        self.assertQuerysetEqual(response.context["latest_question_list"], [])
+        self.assertIn('latest_query_list', response.context)
 
-    def test_past_question(self):
-        """
-        Questions with a published_at in the past are displayed on the
-        index page.
-        """
-        create_query(question_text="Past question.", days=-30)
-        response = self.client.get(reverse("expression:index"))
-        self.assertQuerysetEqual(
-            response.context["latest_question_list"], ["<Question: Past question.>"]
-        )
+    def test_post_valid_expression(self):
+        data = {
+            'expression': 'x**2',
+            'noise_function': 'none',
+            'fineness': '1',
+            'x_min_range': '0',
+            'x_max_range': '2',
+            'comment': 'test',
+        }
+        response = self.client.post(reverse('expression:index'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('plots', response.context)
+        self.assertEqual(response.context['message'], '')
+        self.assertEqual(InputQuery.objects.count(), 1)
 
-    def test_future_question(self):
-        """
-        Questions with a published_at in the future aren't displayed on
-        the index page.
-        """
-        create_query(question_text="Future question.", days=30)
-        response = self.client.get(reverse("expression:index"))
-        self.assertContains(response, "No expression are available.")
-        self.assertQuerysetEqual(response.context["latest_question_list"], [])
+    def test_post_invalid_expression(self):
+        data = {
+            'expression': '2x',  # invalid for eval
+            'noise_function': 'none',
+            'fineness': '1',
+            'x_min_range': '0',
+            'x_max_range': '2',
+            'comment': 'test',
+        }
+        response = self.client.post(reverse('expression:index'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('message', response.context)
+        self.assertIn('Invalid expressoin', response.context['message'])
+        self.assertEqual(InputQuery.objects.count(), 0)
 
-    def test_future_question_and_past_question(self):
-        """
-        Even if both past and future questions exist, only past questions
-        are displayed.
-        """
-        create_query(question_text="Past question.", days=-30)
-        create_query(question_text="Future question.", days=30)
-        response = self.client.get(reverse("expression:index"))
-        self.assertQuerysetEqual(
-            response.context["latest_question_list"], ["<Question: Past question.>"]
-        )
+    def test_requires_login(self):
+        self.client.logout()
+        response = self.client.get(reverse('expression:index'))
+        self.assertNotEqual(response.status_code, 200)
 
-    def test_two_past_questions(self):
-        """
-        The questions index page may display multiple questions.
-        """
-        create_query(question_text="Past question 1.", days=-30)
-        create_query(question_text="Past question 2.", days=-5)
-        response = self.client.get(reverse("expression:index"))
-        self.assertQuerysetEqual(
-            response.context["latest_question_list"],
-            ["<Question: Past question 2.>", "<Question: Past question 1.>"],
-        )
-
-
-class QuestionDetailViewTests(TestCase):
-    def test_future_question(self):
-        """
-        The detail view of a question with a published_at in the future
-        returns a 404 not found.
-        """
-        future_question = create_query(question_text="Future question.", days=5)
-        url = reverse("expression:detail", args=(future_question.id,))
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 404)
-
-    def test_past_question(self):
-        """
-        The detail view of a question with a published_at in the past
-        displays the question's text.
-        """
-        past_question = create_query(question_text="Past Question.", days=-5)
-        url = reverse("expression:detail", args=(past_question.id,))
-        response = self.client.get(url)
-        self.assertContains(response, past_question.question_text)
-
-
-class QuestionModelTests(TestCase):
-
-    def test_was_published_in_a_month_with_future_question(self):
-        """
-        was_published_in_a_month() returns False for questions whose published_at
-        is in the future.
-        """
-        time = timezone.now() + datetime.timedelta(days=30)
-        future_question = InputQuery(published_at=time)
-        self.assertIs(future_question.was_published_in_a_month(), False)
-
-    def test_was_published_in_a_month_with_old_question(self):
-        """
-        was_published_in_a_month() returns False for questions whose published_at
-        is older than 1 day.
-        """
-        time = timezone.now() - datetime.timedelta(days=1, seconds=1)
-        old_question = InputQuery(published_at=time)
-        self.assertIs(old_question.was_published_in_a_month(), False)
-
-    def test_was_published_in_a_month_with_recent_question(self):
-        """
-        was_published_in_a_month() returns True for questions whose published_at
-        is within the last day.
-        """
-        time = timezone.now() - datetime.timedelta(hours=23, minutes=59, seconds=59)
-        recent_question = InputQuery(published_at=time)
-        self.assertIs(recent_question.was_published_in_a_month(), True)
+    def post(self, path, data=None, content_type=None, follow=False, secure=False, **extra):
+        # テスト時はrequestにtest_case属性を付与してlogging抑制
+        extra['test_case'] = True
+        return super().post(path, data=data, content_type=content_type, follow=follow, secure=secure, **extra)
